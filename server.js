@@ -1,7 +1,12 @@
 const express = require('express');
 const routes = require('./routes');
-const db = require('./db');
+// const db =require('./db');
 const logger = require('morgan'); //tool to print raw JSON; all operations
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+const db = require('./db')
 
 const PORT = process.env.PORT || 3500;
 
@@ -13,6 +18,6 @@ app.use(logger('dev'));  //brings in the 'morgan' library
 
 app.use('/api', routes);
 
-db.on('error', console.error.bind(console, 'MongoDB connection error: '));
+// db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

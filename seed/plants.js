@@ -1,5 +1,19 @@
-const db = require('../db');
+const mongoose = require('mongoose');
+// const db = require('../db');
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const Plant = require('../models/plant');
+
+let MONGODB_URI = process.env.NODE_ENV =="production"? process.env.PROD_MONGODB : process.env.MONGODB_URI_LOCAL ;
+mongoose.connect(MONGODB_URI, {useUnifiedTopology: true, useNewUrlParser: true})
+.then(() => {
+  console.log('Succesfully connected to MongoDB');
+})
+.catch(e => console.error('Connection error', e.message));
+
+const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
